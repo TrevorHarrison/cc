@@ -142,7 +142,7 @@ function serviceMenu()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
 					destXYZ = newDestXYZ;
-					writeAt("     Done", 1, 10, colors.black, colors.green);
+					writeAt("   Success.   ", 1, 10, colors.black, colors.green);
 					sleep(2)
 					showMenu()
 					return
