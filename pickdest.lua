@@ -3,6 +3,14 @@ local chest = peripheral.wrap("left");
 local mon;
 local currentDest = "Unknown"
 
+function resetMonitor()
+	mon.setTextScale(0.5)
+	mon.setBackgroundColor( colors.white )
+	mon.setTextColor( colors.green )
+	mon.setCursorPos(1,1)
+	mon.clear()
+end
+
 function deployMonitor()
 	local success, blockInfo = turtle.inspectUp();
 	if success and string.find(blockInfo.name, "quartz") then
@@ -11,23 +19,7 @@ function deployMonitor()
 		turtle.select(5)
 		if turtle.placeUp() then
 			mon = peripheral.wrap("top")
-			mon.setTextScale(0.5)
-			mon.setBackgroundColor( colors.white )
-			mon.setTextColor( colors.green )
-			mon.setCursorPos(1,1)
-			mon.clear()
-			-- 15 10 size
-			--  123456789012345
-			-- 1   Current:
-			-- 2  sdfsdfsdfsdf
-			-- 3  Choose new:
-			-- 4  AAAAAAAAAA
-			-- 5  bBBBbbBBB
-			-- 6  CCccCCCCCC
-			-- 7  ddDDDDDDDD
-			-- 8  eeeeeeeee
-			-- 9  ffffffff
-			-- 0  ggggggggg
+			resetMonitor()
 		else
 			write("Failed to place monitor")
 		end
@@ -107,9 +99,7 @@ function writeAt(s, x, y, textColor, lineColor)
 end
 
 function showMenu()
-	mon.setBackgroundColor( colors.white )
-	mon.setTextColor( colors.green )
-	mon.clear()
+	resetMonitor()
 	writeAt("   Current:", 1,1, colors.black, colors.green)
 	writeAt(currentDest, 1, 2)
 	writeAt("  Choose new:", 1, 3, colors.black, colors.green)
@@ -125,30 +115,29 @@ end
 
 local serviceCount = 0;
 function serviceMenu()
-	writeAt("" .. serviceCount, 7, 10);
+	-- writeAt("" .. serviceCount, 7, 10);
 	serviceCount = serviceCount + 1
 	
 	local x, y = getClickWithTimeout(0.5)
 	if x then
-		writeAt("" .. x .. ", " .. y .. "         ", 1, 10)
+		-- writeAt("" .. x .. ", " .. y .. "         ", 1, 10)
 		if  y > 3 then
 			local bookNum = y-3
 			local bookInfo = chest.getStackInSlot(bookNum)
 			if bookInfo and bookInfo.myst_book then
 				local newDestName = string.sub(bookInfo.display_name, 1, 14);
 				mon.clear();
-				writeAt("Setting Portal", 1, 2);
-				mon.setBackgroundColor( colors.red )
-				mon.setTextColor( colors.black )
-				writeAt("               ", 1, 3)
-				writeAt("               ", 1, 4)
-				writeAt("               ", 1, 5)
+				writeAt("Setting Portal", 1, 1, color.black, color.green);
+				writeAt("   Dest To:", 1, 2, color.black, color.green);
 				writeAt(newDestName, 1, 4)
 				
 				retractBook()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
-					writeAt("Safe Travels", 1, 7);
+					mon.setTextScale(3)
+					mon.setBackgroundColor(colors.green)
+					mon.setTextColor( colors.black)
+					writeAt(" OK", 1, 2);
 					sleep(2)
 					showMenu()
 					return
@@ -158,10 +147,10 @@ function serviceMenu()
 				end
 			end
 		end
-		showMenu()
-		writeAt("" .. x .. ", " .. y .. "         ", 1, 9)
+		-- showMenu()
+		-- writeAt("" .. x .. ", " .. y .. "         ", 1, 9)
 	else
-		writeAt("noclick", 1, 10)
+		-- writeAt("noclick", 1, 10)
 	end
 end
 
