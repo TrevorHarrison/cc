@@ -139,11 +139,12 @@ function serviceMenu()
 				retractBook()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
-					destXYZ = "x:" .. bookInfo.myst_book.spawn[1] .. ", y:" .. bookInfo.myst_book.spawn[2] .. ", z:" .. bookInfo.myst_book.spawn[3];
-					mon.setTextScale(3)
+					destXYZ = "" .. bookInfo.myst_book.spawn[1] .. "," .. bookInfo.myst_book.spawn[2] .. "," .. bookInfo.myst_book.spawn[3];
+					sleep(1)
+					mon.setTextScale(2)
 					mon.setBackgroundColor(colors.green)
 					mon.setTextColor( colors.black)
-					writeAt(" OK", 1, 2);
+					writeAt(" OK", 1, 1);
 					sleep(2)
 					showMenu()
 					return
