@@ -96,16 +96,23 @@ function retractBook()
 	currentDest = "Deactivated"
 end
 
-function writeAt(s, x, y)
+function writeAt(s, x, y, textColor, lineColor)
+	if not textColor then textColor = colors.green; end
+	if not lineColor then lineColor = colors.white; end
 	mon.setCursorPos(x, y)
+	mon.setBackgroundColor( lineColor )
+	mon.setTextColor( textColor )
+	mon.clearLine()
 	mon.write(s)
 end
 
 function showMenu()
+	mon.setBackgroundColor( colors.white )
+	mon.setTextColor( colors.green )
 	mon.clear()
-	writeAt("   Current:", 1,1)
+	writeAt("   Current:", 1,1, colors.black, colors.green)
 	writeAt(currentDest, 1, 2)
-	writeAt("Choose new:", 1, 3)
+	writeAt("  Choose new:", 1, 3, colors.black, colors.green)
 	for i = 1,7 do
 		local bookInfo = chest.getStackInSlot(i)
 		local bookName = ""
