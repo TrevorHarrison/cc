@@ -144,7 +144,8 @@ function serviceMenu()
 					mon.setTextScale(2)
 					mon.setBackgroundColor(colors.green)
 					mon.setTextColor( colors.black)
-					writeAt(" OK", 1, 1);
+					mon.clear()
+					writeAt(" OK", 1, 2);
 					sleep(2)
 					showMenu()
 					return
@@ -180,7 +181,7 @@ end
 retractMonitor()
 retractBook()
 
-local retractDelay = 5;
+local retractDelay = 2;
 local needsleep = true;
 
 while true do
@@ -195,7 +196,7 @@ while true do
 	
 	if mon then
 		if player_on_pad then
-			retractDelay = 5
+			retractDelay = 2
 			serviceMenu()
 		else
 			if not player_blocking_mon then
