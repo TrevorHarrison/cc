@@ -131,16 +131,18 @@ function serviceMenu()
 			local bookInfo = chest.getStackInSlot(bookNum)
 			if bookInfo and bookInfo.myst_book then
 				local newDestName = string.sub(bookInfo.display_name, 1, 14);
-				mon.clear();
+				local newDestXYZ = " " .. bookInfo.myst_book.spawn[1] .. "," .. bookInfo.myst_book.spawn[2] .. "," .. bookInfo.myst_book.spawn[3];
+				resetMonitor()
 				writeAt("Setting Portal", 1, 1, colors.black, colors.green);
 				writeAt("   Dest To:", 1, 2, colors.black, colors.green);
 				writeAt(newDestName, 1, 4)
+				writeAt(newDestXYZ, 1, 6)
 				
 				retractBook()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
-					destXYZ = "" .. bookInfo.myst_book.spawn[1] .. "," .. bookInfo.myst_book.spawn[2] .. "," .. bookInfo.myst_book.spawn[3];
-					writeAt("     Done", 1, 7);
+					destXYZ = newDestXYZ;
+					writeAt("     Done", 1, 10, colors.black, colors.green);
 					sleep(2)
 					showMenu()
 					return
