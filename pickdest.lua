@@ -146,20 +146,22 @@ function serviceMenu()
 			end
 		end
 		showMenu()
-		writeAt("" .. x .. ", " .. y .. "         ", 1, 10)
+		writeAt("" .. x .. ", " .. y .. "         ", 1, 9)
 	else
 		writeAt("noclick", 1, 10)
 	end
 end
 
 function getClickWithTimeout(timeout)
-	os.startTimer(timeout)
+	local timerid = os.startTimer(timeout)
 	while true do
 		local event, a, b, c = os.pullEvent()
 		if event == "monitor_touch" then
 			return b, c
 		end
-		break
+		if event == "timer" and a == timerid then
+			break
+		end
 	end
 end
 
