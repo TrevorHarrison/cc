@@ -2,6 +2,7 @@ local sensor = peripheral.wrap("bottom")
 local chest = peripheral.wrap("left");
 local mon;
 local currentDest = "Unknown"
+local destXYZ = nil
 
 function resetMonitor()
 	mon.setTextScale(0.5)
@@ -86,6 +87,7 @@ function retractBook()
 	end
 	chest.pullItem("down", 1, 1, firstEmpty)
 	currentDest = "Deactivated"
+	destXYZ = nil
 end
 
 function writeAt(s, x, y, textColor, lineColor)
@@ -103,13 +105,16 @@ function showMenu()
 	writeAt("   Current:", 1,1, colors.black, colors.green)
 	writeAt(currentDest, 1, 2)
 	writeAt("  Choose new:", 1, 3, colors.black, colors.green)
-	for i = 1,7 do
+	for i = 1,6 do
 		local bookInfo = chest.getStackInSlot(i)
 		local bookName = ""
 		if bookInfo and bookInfo.myst_book then
 			bookName = string.sub(bookInfo.display_name, 1, 14);
 		end
 		writeAt(bookName, 1, i+3)
+	end
+	if destXYZ then
+		writeAt(destXYZ, 1, 10, colors.black, colors.green)
 	end
 end
 
@@ -127,13 +132,14 @@ function serviceMenu()
 			if bookInfo and bookInfo.myst_book then
 				local newDestName = string.sub(bookInfo.display_name, 1, 14);
 				mon.clear();
-				writeAt("Setting Portal", 1, 1, color.black, color.green);
-				writeAt("   Dest To:", 1, 2, color.black, color.green);
+				writeAt("Setting Portal", 1, 1, colors.black, colors.green);
+				writeAt("   Dest To:", 1, 2, colors.black, colors.green);
 				writeAt(newDestName, 1, 4)
 				
 				retractBook()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
+					destXYZ = "x:" .. bookInfo.myst_book.spawn[1] .. ", y:" .. bookInfo.myst_book.spawn[2] .. ", z:" .. bookInfo.myst_book.spawn[3];
 					mon.setTextScale(3)
 					mon.setBackgroundColor(colors.green)
 					mon.setTextColor( colors.black)
@@ -160,6 +166,9 @@ function getClickWithTimeout(timeout)
 		local event, a, b, c = os.pullEvent()
 		if event == "monitor_touch" then
 			return b, c
+		end
+		if event == "char" then
+			os.exit()
 		end
 		if event == "timer" and a == timerid then
 			break
