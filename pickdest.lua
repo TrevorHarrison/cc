@@ -130,8 +130,14 @@ function serviceMenu()
 			if bookInfo and bookInfo.myst_book then
 				local newDestName = string.sub(bookInfo.display_name, 1, 14);
 				mon.clear();
-				writeAt("Setting Dest To", 1, 2);
+				writeAt("Setting Portal", 1, 2);
+				mon.setBackgroundColor( colors.red )
+				mon.setTextColor( colors.black )
+				writeAt("               ", 1, 3)
+				writeAt("               ", 1, 4)
+				writeAt("               ", 1, 5)
 				writeAt(newDestName, 1, 4)
+				
 				retractBook()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
