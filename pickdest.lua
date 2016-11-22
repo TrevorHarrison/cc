@@ -121,7 +121,7 @@ end
 local serviceCount = 0;
 function serviceMenu()
 	-- writeAt("" .. serviceCount, 7, 10);
-	serviceCount = serviceCount + 1
+	-- serviceCount = serviceCount + 1
 	
 	local x, y = getClickWithTimeout(0.5)
 	if x then
@@ -140,12 +140,7 @@ function serviceMenu()
 				if chest.pushItem("down", bookNum, 1, 1) then
 					currentDest = newDestName;
 					destXYZ = "" .. bookInfo.myst_book.spawn[1] .. "," .. bookInfo.myst_book.spawn[2] .. "," .. bookInfo.myst_book.spawn[3];
-					sleep(1)
-					mon.setTextScale(2)
-					mon.setBackgroundColor(colors.green)
-					mon.setTextColor( colors.black)
-					mon.clear()
-					writeAt(" OK", 1, 2);
+					writeAt("     Done", 1, 7);
 					sleep(2)
 					showMenu()
 					return
@@ -169,7 +164,7 @@ function getClickWithTimeout(timeout)
 		if event == "monitor_touch" then
 			return b, c
 		end
-		if event == "char" then
+		if event == "char" or event == "key" or event == "terminate" then
 			os.exit()
 		end
 		if event == "timer" and a == timerid then
